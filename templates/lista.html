@@ -1,0 +1,43 @@
+$def with (productos, criterio, reglas)
+
+<div class="contenedor">
+    <h1>Productos del Supermercado (Aurrera)</h1>
+    <p class="subtitulo">
+        Lista ordenada por: <strong>$reglas.get(criterio, criterio)</strong>
+        &mdash; $len(productos) producto(s) encontrado(s)
+    </p>
+
+    <a class="volver" href="/">&larr; Cambiar regla de busqueda</a>
+
+    <table class="tabla-productos">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Categoria</th>
+                <th>Nombre del producto</th>
+                <th>Precio</th>
+                <th>Fecha de caducidad</th>
+                <th>Unidad de medida</th>
+                <th>Cantidad en inventario</th>
+                <th>Marca</th>
+                <th>Codigo de barras</th>
+            </tr>
+        </thead>
+        <tbody>
+            $for i, p in enumerate(productos, start=1):
+                <tr>
+                    <td>$i</td>
+                    <td>$p['categoria']</td>
+                    <td>$p['nombre']</td>
+                    <td>$$$('%.2f' % p['precio'])</td>
+                    <td>$p['fecha_caducidad']</td>
+                    <td>$p['unidad_medida']</td>
+                    <td>$p['cantidad_inventario']</td>
+                    <td>$p['marca']</td>
+                    <td>$p['codigo_barras']</td>
+                </tr>
+            $if not productos:
+                <tr><td colspan="9" class="sin-resultados">No se encontraron productos con esa regla.</td></tr>
+        </tbody>
+    </table>
+</div>

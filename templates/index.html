@@ -1,0 +1,62 @@
+$def with (reglas)
+
+<div class="contenedor">
+    <h1>Productos del Supermercado (Aurrera)</h1>
+    <p class="subtitulo">
+        Elige una regla y el sistema acomodará los productos en una lista
+        ordenada donde cada producto ocupa una posición determinada.
+    </p>
+
+    <form action="/lista" method="get" id="formulario-reglas">
+        <div class="campo">
+            <label for="criterio">1. Ordenar / buscar por:</label>
+            <select name="criterio" id="criterio" onchange="actualizarOpciones()">
+                $for clave, etiqueta in reglas.items():
+                    <option value="$clave">$etiqueta</option>
+            </select>
+        </div>
+
+        <div class="campo" id="opcion-subcriterio" style="display:none;">
+            <label for="subcriterio">2. Dentro de cada categoria, ordenar tambien por:</label>
+            <select name="subcriterio" id="subcriterio">
+                <option value="">(sin regla secundaria)</option>
+                $for clave, etiqueta in reglas.items():
+                    $if clave != "categoria":
+                        <option value="$clave">$etiqueta</option>
+            </select>
+        </div>
+
+        <div class="campo" id="opcion-precio" style="display:none;">
+            <label>2. Buscar por precio:</label>
+            <div class="fila-precio">
+                <div>
+                    <label for="precio_exacto">Precio exacto</label>
+                    <input type="number" step="0.01" name="precio_exacto" id="precio_exacto"
+                           placeholder="ej. 200">
+                </div>
+                <span class="o">o un rango:</span>
+                <div>
+                    <label for="precio_min">Minimo</label>
+                    <input type="number" step="0.01" name="precio_min" id="precio_min" placeholder="ej. 20">
+                </div>
+                <div>
+                    <label for="precio_max">Maximo</label>
+                    <input type="number" step="0.01" name="precio_max" id="precio_max" placeholder="ej. 100">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="boton-principal">3. Generar lista</button>
+    </form>
+</div>
+
+<script>
+function actualizarOpciones() {
+    var criterio = document.getElementById("criterio").value;
+    document.getElementById("opcion-subcriterio").style.display =
+        (criterio === "categoria") ? "block" : "none";
+    document.getElementById("opcion-precio").style.display =
+        (criterio === "precio") ? "block" : "none";
+}
+actualizarOpciones();
+</script>
