@@ -65,3 +65,21 @@ def insertar_producto(producto):
     ))
     conexion.commit()
     conexion.close()
+
+
+def buscar_productos(texto):
+    """
+    Busca productos cuyo nombre, marca o categoria contengan 'texto'.
+    """
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    patron = f"%{texto}%"
+    cursor.execute("""
+        SELECT * FROM productos
+        WHERE nombre LIKE ? COLLATE NOCASE
+           OR marca LIKE ? COLLATE NOCASE
+           OR categoria LIKE ? COLLATE NOCASE
+    """, (patron, patron, patron))
+    filas = cursor.fetchall()
+    conexion.close()
+    return [dict(fila) for fila in filas]
